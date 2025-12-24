@@ -1,20 +1,32 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# SuiteGen
 
-# Run and deploy your AI Studio app
+A professional, offline-capable productivity suite built with React and Tailwind CSS. SuiteGen provides a collection of essential tools designed for developers and professionals to streamline their daily workflows.
 
-This contains everything you need to run your app locally.
+## 🛠️ Tools Included
 
-View your app in AI Studio: https://ai.studio/apps/drive/1AHjkZyVK3gNirCXoFP1IGRqZEaYG8zbf
+### 1. Markdown to PDF
+A real-time Markdown editor with a live preview pane.
+- **Features:** GFM (GitHub Flavored Markdown) support, syntax highlighting, and a dedicated "Save as PDF" button that leverages browser print functionality for high-quality export.
 
-## Run Locally
+### 2. Invoice Generator
+A client-side invoice creation tool.
+- **Features:** real-time tax and total calculations, dynamic line item management, and a clean, professional print layout that hides editor controls when saving as PDF.
 
-**Prerequisites:**  Node.js
+### 3. Focus Timer (Pomodoro)
+A productivity timer to help manage work sessions.
+- **Features:** Pre-set modes for Focus (25m), Short Break (5m), and Long Break (15m). Includes an integrated task list to track what you are working on during sessions.
 
+### 4. JSON Beautifier
+A developer utility for formatting JSON data.
+- **Features:** Format (Beautify) raw JSON with proper indentation, Minify JSON for storage, and validate JSON syntax with error reporting.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🎨 Features
+- **Dark Mode:** Fully supported system-wide dark theme.
+- **Responsive Design:** Works seamlessly on desktop and mobile devices.
+- **Privacy Focused:** All data processing happens locally in your browser.
+
+## 🚀 Tech Stack
+- React 19
+- Tailwind CSS
+- Lucide React (Icons)
+- React Markdown
