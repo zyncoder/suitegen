@@ -1,0 +1,5 @@
+{
+  "name": "SuiteGen",
+  "description": "A professional productivity suite featuring a Markdown to PDF converter, invoice generator, Pomodoro focus timer, and JSON beautifier.",
+  "requestFramePermissions": []
+}
