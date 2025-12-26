@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, FileSpreadsheet, Menu, Command, Timer, Moon, Sun, Braces, Link, Code2 } from 'lucide-react';
-import MarkdownToPdf from './components/MarkdownToPdf';
-import InvoiceGenerator from './components/InvoiceGenerator';
-import Pomodoro from './components/Pomodoro';
-import JsonBeautifier from './components/JsonBeautifier';
-import SharedClipboard from './components/SharedClipboard';
-import PythonCompiler from './components/PythonCompiler';
-import { AppTool } from './types';
+import MarkdownToPdf from './components/MarkdownToPdf.tsx';
+import InvoiceGenerator from './components/InvoiceGenerator.tsx';
+import Pomodoro from './components/Pomodoro.tsx';
+import JsonBeautifier from './components/JsonBeautifier.tsx';
+import SharedClipboard from './components/SharedClipboard.tsx';
+import PythonCompiler from './components/PythonCompiler.tsx';
+import { AppTool } from './types.ts';
 
 const App: React.FC = () => {
   // Initialize state based on URL

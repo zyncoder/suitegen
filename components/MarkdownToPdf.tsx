@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Printer, FileText, Loader2 } from 'lucide-react';
-import { DEFAULT_MARKDOWN } from '../types';
+import { DEFAULT_MARKDOWN } from '../types.ts';
 import html2pdf from 'html2pdf.js';
 
 const MarkdownToPdf: React.FC = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, Plus, Trash2, CheckCircle, Circle, Coffee, Brain, Armchair } from 'lucide-react';
-import { Task } from '../types';
+import { Task } from '../types.ts';
 
 type TimerMode = 'FOCUS' | 'SHORT_BREAK' | 'LONG_BREAK';
 

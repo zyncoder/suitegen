@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Plus, Trash2, Printer, Loader2 } from 'lucide-react';
-import { InvoiceData, InvoiceItem, DEFAULT_INVOICE } from '../types';
+import { InvoiceData, InvoiceItem, DEFAULT_INVOICE } from '../types.ts';
 import html2pdf from 'html2pdf.js';
 
 const InvoiceGenerator: React.FC = () => {
