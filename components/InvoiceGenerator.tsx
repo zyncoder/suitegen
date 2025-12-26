@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import { Plus, Trash2, Printer } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Plus, Trash2, Printer, Loader2 } from 'lucide-react';
 import { InvoiceData, InvoiceItem, DEFAULT_INVOICE } from '../types';
+import html2pdf from 'html2pdf.js';
 
 const InvoiceGenerator: React.FC = () => {
   const [data, setData] = useState<InvoiceData>(DEFAULT_INVOICE);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const printRef = useRef<HTMLDivElement>(null);
 
   const calculateSubtotal = () => data.items.reduce((acc, item) => acc + (item.quantity * item.price), 0);
   const calculateTax = () => calculateSubtotal() * (data.taxRate / 100);
@@ -25,6 +28,37 @@ const InvoiceGenerator: React.FC = () => {
   const removeItem = (index: number) => {
     const newItems = data.items.filter((_, i) => i !== index);
     setData({ ...data, items: newItems });
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!printRef.current) return;
+    setIsGenerating(true);
+    
+    const element = printRef.current;
+    // For invoice, we want precise A4 rendering
+    const opt = {
+      margin: 0,
+      filename: `Invoice-${data.invoiceNumber}.pdf`,
+      image: { type: 'jpeg' as const, quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    try {
+        // Handle potential ESM import variations where default export is wrapped
+        const html2pdfLib = (html2pdf as any).default || html2pdf;
+        
+        if (typeof html2pdfLib !== 'function') {
+           throw new Error("html2pdf library is not a function");
+        }
+
+        await html2pdfLib().set(opt).from(element).save();
+    } catch (error) {
+        console.error("PDF Generation failed:", error);
+        alert("Could not generate PDF. Please try again.");
+    } finally {
+        setIsGenerating(false);
+    }
   };
 
   // Shared input class styles for reuse
@@ -175,17 +209,18 @@ const InvoiceGenerator: React.FC = () => {
         <div className="h-16 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex justify-between items-center px-6 no-print shadow-sm z-10 transition-colors">
           <span className="font-semibold text-gray-700 dark:text-gray-200">Live Preview</span>
            <button
-            onClick={() => window.print()}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors shadow-sm"
+            onClick={handleDownloadPdf}
+            disabled={isGenerating}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 disabled:opacity-70 disabled:cursor-not-allowed transition-colors shadow-sm"
           >
-            <Printer className="w-4 h-4" />
-            Download PDF
+            {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Printer className="w-4 h-4" />}
+            {isGenerating ? 'Generating...' : 'Download PDF'}
           </button>
         </div>
         
         <div className="flex-1 overflow-auto p-4 md:p-8 flex justify-center items-start">
             {/* The Invoice Paper - Stays white for print accuracy */}
-            <div className="bg-white shadow-xl w-full max-w-[210mm] min-h-[297mm] p-[15mm] md:p-[20mm] print-container text-sm md:text-base text-gray-800 flex flex-col">
+            <div ref={printRef} className="bg-white shadow-xl w-full max-w-[210mm] min-h-[297mm] p-[15mm] md:p-[20mm] print-container text-sm md:text-base text-gray-800 flex flex-col">
               
               {/* Invoice Header */}
               <div className="flex justify-between items-start mb-12">

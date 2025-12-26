@@ -24,6 +24,7 @@
     </script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
       
       body {
         font-family: 'Inter', sans-serif;
@@ -35,35 +36,53 @@
         background-color: #0d1117;
       }
 
-      /* Print Styles */
+      /* Print Styles (Fallback) */
       @media print {
         @page { margin: 0; }
         body { background: white; -webkit-print-color-adjust: exact; }
         .no-print { display: none !important; }
         .print-only { display: block !important; }
+        
+        /* Reset layout for print */
+        body, #root {
+           height: auto !important;
+           overflow: visible !important;
+        }
+
         .print-container { 
           width: 100% !important; 
-          height: 100% !important; 
-          overflow: visible !important; 
+          height: auto !important; 
           position: absolute !important; 
           top: 0 !important; 
           left: 0 !important;
           margin: 0 !important;
-          padding: 20px !important; /* Safety padding for printer margins */
+          padding: 20px !important; 
+          background: white !important;
+          color: black !important;
+          z-index: 9999;
         }
         /* Markdown Specific Print Overrides */
         .prose { max-width: none !important; }
       }
     </style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
   <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "react-markdown": "https://esm.sh/react-markdown@^10.1.0",
-    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.1"
+    "react": "https://esm.sh/react@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "lucide-react": "https://esm.sh/lucide-react@0.294.0?external=react",
+    "react-markdown": "https://esm.sh/react-markdown@9.0.1?external=react",
+    "remark-gfm": "https://esm.sh/remark-gfm@4.0.0",
+    "trystero": "https://esm.sh/trystero@0.19.0",
+    "qrcode.react": "https://esm.sh/qrcode.react@3.1.0?external=react",
+    "html2pdf.js": "https://esm.sh/html2pdf.js@0.10.1?bundle",
+    "prismjs": "https://esm.sh/prismjs@1.29.0",
+    "prismjs/": "https://esm.sh/prismjs@1.29.0/",
+    "react-simple-code-editor": "https://esm.sh/react-simple-code-editor@0.13.1?external=react"
   }
 }
 </script>

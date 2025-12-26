@@ -20,13 +20,18 @@ A productivity timer to help manage work sessions.
 A developer utility for formatting JSON data.
 - **Features:** Format (Beautify) raw JSON with proper indentation, Minify JSON for storage, and validate JSON syntax with error reporting.
 
+### 5. Shared Clipboard (P2P)
+A no-login, serverless clipboard sharing tool.
+- **Features:** Generates a unique room URL and QR code. Uses WebRTC to sync text in real-time between devices on the same page. Perfect for quickly moving text from mobile to desktop.
+
 ## 🎨 Features
 - **Dark Mode:** Fully supported system-wide dark theme.
 - **Responsive Design:** Works seamlessly on desktop and mobile devices.
-- **Privacy Focused:** All data processing happens locally in your browser.
+- **Privacy Focused:** All data processing happens locally in your browser (or via P2P encrypted channels for the clipboard).
 
 ## 🚀 Tech Stack
 - React 19
 - Tailwind CSS
 - Lucide React (Icons)
 - React Markdown
+- Trystero (WebRTC)

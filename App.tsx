@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, FileSpreadsheet, Menu, Command, Timer, Moon, Sun, Braces } from 'lucide-react';
+import { FileText, FileSpreadsheet, Menu, Command, Timer, Moon, Sun, Braces, Link, Code2 } from 'lucide-react';
 import MarkdownToPdf from './components/MarkdownToPdf';
 import InvoiceGenerator from './components/InvoiceGenerator';
 import Pomodoro from './components/Pomodoro';
 import JsonBeautifier from './components/JsonBeautifier';
+import SharedClipboard from './components/SharedClipboard';
+import PythonCompiler from './components/PythonCompiler';
 import { AppTool } from './types';
 
 const App: React.FC = () => {
-  const [activeTool, setActiveTool] = useState<AppTool>(AppTool.MD_TO_PDF);
+  // Initialize state based on URL
+  const [activeTool, setActiveTool] = useState<AppTool>(() => {
+    if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        const toolParam = params.get('tool');
+        if (toolParam === 'clipboard') return AppTool.SHARED_CLIPBOARD;
+        if (toolParam === 'python') return AppTool.PYTHON_COMPILER;
+    }
+    return AppTool.MD_TO_PDF;
+  });
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -29,10 +41,22 @@ const App: React.FC = () => {
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
-  // Auto-close sidebar on mobile selection
+  // Auto-close sidebar on mobile selection & Update URL
   const handleToolChange = (tool: AppTool) => {
     setActiveTool(tool);
     setIsSidebarOpen(false);
+    
+    // Clean URL when switching away from specific tools to avoid confusion
+    if (window.location.search.includes('room=')) {
+        try {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('room');
+            url.searchParams.delete('tool');
+            window.history.pushState({}, '', url.pathname); 
+        } catch (e) {
+            console.warn("Could not update history (likely sandbox environment):", e);
+        }
+    }
   };
 
   const getHeaderTitle = () => {
@@ -41,6 +65,8 @@ const App: React.FC = () => {
       case AppTool.INVOICE_GENERATOR: return 'Invoice Gen';
       case AppTool.POMODORO: return 'Focus Timer';
       case AppTool.JSON_BEAUTIFIER: return 'JSON Beautifier';
+      case AppTool.SHARED_CLIPBOARD: return 'Shared Clipboard';
+      case AppTool.PYTHON_COMPILER: return 'Python Compiler';
       default: return 'SuiteGen';
     }
   };
@@ -128,6 +154,30 @@ const App: React.FC = () => {
               <Braces className={`w-5 h-5 ${activeTool === AppTool.JSON_BEAUTIFIER ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`} />
               JSON Beautifier
             </button>
+            
+            <button
+              onClick={() => handleToolChange(AppTool.PYTHON_COMPILER)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+                ${activeTool === AppTool.PYTHON_COMPILER
+                  ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 shadow-sm border border-blue-100 dark:border-blue-900/30' 
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'}
+              `}
+            >
+              <Code2 className={`w-5 h-5 ${activeTool === AppTool.PYTHON_COMPILER ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`} />
+              Python Compiler
+            </button>
+
+            <button
+              onClick={() => handleToolChange(AppTool.SHARED_CLIPBOARD)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+                ${activeTool === AppTool.SHARED_CLIPBOARD
+                  ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 shadow-sm border border-blue-100 dark:border-blue-900/30' 
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'}
+              `}
+            >
+              <Link className={`w-5 h-5 ${activeTool === AppTool.SHARED_CLIPBOARD ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`} />
+              Shared Clipboard
+            </button>
           </nav>
 
           {/* Footer */}
@@ -173,6 +223,8 @@ const App: React.FC = () => {
           {activeTool === AppTool.INVOICE_GENERATOR && <InvoiceGenerator />}
           {activeTool === AppTool.POMODORO && <Pomodoro />}
           {activeTool === AppTool.JSON_BEAUTIFIER && <JsonBeautifier />}
+          {activeTool === AppTool.SHARED_CLIPBOARD && <SharedClipboard />}
+          {activeTool === AppTool.PYTHON_COMPILER && <PythonCompiler />}
         </div>
 
       </main>
